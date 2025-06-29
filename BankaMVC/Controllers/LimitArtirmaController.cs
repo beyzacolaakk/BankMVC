@@ -239,7 +239,7 @@ namespace BankaMVC.Controllers
 
                 if (string.IsNullOrEmpty(token))
                 {
-                    TempData["Error"] = "Giriş yapmanız gerekiyor.";
+                    TempData["Error"] = "You need to log in.";
                     return RedirectToAction("Giris", "Hesap");
                 }
 
@@ -265,15 +265,12 @@ namespace BankaMVC.Controllers
 
                 if (response.IsSuccessStatusCode)
                 {
-                    TempData["Success"] = "Talebiniz başarıyla oluşturuldu.";
+                    TempData["Success"] = "Your request has been created successfully.";
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    Console.WriteLine("Hata Kodu: " + response.StatusCode);
-                    Console.WriteLine("Hata Açıklaması: " + response.ReasonPhrase);
-                    Console.WriteLine("Hata İçeriği: " + responseContent);
-                    TempData["Error"] = "Talep oluşturulurken bir hata oluştu.";
+
                     return RedirectToAction("Index");
                 }
             }

@@ -130,17 +130,17 @@ namespace BankaMVC.Controllers
 
                 if (string.IsNullOrEmpty(token))
                 {
-                    TempData["Error"] = "Giriş yapmanız gerekiyor.";
+              
                     return RedirectToAction("Giris", "Hesap");
                 }
 
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml")); // Backend XML döneceği için bu önemli
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml")); 
 
                 var apiUrl = $"{StaticSettings.ApiBaseUrl}SupportRequest/delete/{id}";
 
-                // DELETE isteğini body olmadan gönderiyoruz çünkü backend body beklemiyor.
+         
                 var response = await client.DeleteAsync(apiUrl);
 
                 var responseContent = await response.Content.ReadAsStringAsync();
@@ -151,9 +151,7 @@ namespace BankaMVC.Controllers
                 }
                 else
                 {
-                    Console.WriteLine("Hata Kodu: " + response.StatusCode);
-                    Console.WriteLine("Hata Açıklaması: " + response.ReasonPhrase);
-                    Console.WriteLine("Hata İçeriği: " + responseContent);
+        
                     TempData["Error"] = "Silme işlemi başarısız oldu.";
                 }
 

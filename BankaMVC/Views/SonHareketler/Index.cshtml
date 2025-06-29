@@ -73,18 +73,18 @@
             btn.addEventListener('click', function () {
                 const tabType = this.getAttribute('data-tab');
 
-                // Tab butonlarını güncelle
+            
                 tabBtns.forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
 
-                // Başlığı güncelle
+               
                 if (tabType === 'vadesiz') {
                     sectionTitle.textContent = 'Latest Account Transactions';
                 } else {
                     sectionTitle.textContent = 'Latest Card Transactions';
                 }
 
-                // İşlem listesini güncelle
+               
                 fetch(`/SonHareketler/GetIslemler?tip=${tabType}`)
                     .then(response => response.text())
                     .then(html => {
