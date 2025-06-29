@@ -35,45 +35,31 @@ namespace BankaMVC.Controllers
                 return View(model);
             }
 
-        
+
             [HttpPost]
             public async Task<IActionResult> ParaCekYatir(ParaIslemViewModel paraIslemViewModel)
             {
                 if (!ModelState.IsValid)
                 {
-                    return View("Basarisiz",paraIslemViewModel);
+                    return View("Basarisiz", paraIslemViewModel);
                 }
-                ParaCekYatirDto paraCekYatirDto=new ParaCekYatirDto();
-                if (paraIslemViewModel.AracTuru =="card")
+
+                var paraCekYatirDto = new DepositWithdrawDto
                 {
-                    paraCekYatirDto = new ParaCekYatirDto
-                    {
-
-                        Tutar = paraIslemViewModel.Tutar ?? paraIslemViewModel.YTutar ?? 0,
-                        IslemTipi = paraIslemViewModel.IslemTuru,
-                        HesapId =  paraIslemViewModel.SecilenKartId,
-                        Aciklama = "",
-                  IslemTuru=paraIslemViewModel.AracTuru,
-
-
+                    Amount = paraIslemViewModel.Tutar ?? paraIslemViewModel.YTutar ?? 0,
+                    TransactionType = paraIslemViewModel.IslemTuru == "Para Çekme"
+                     ? "Withdraw"
+                     : paraIslemViewModel.IslemTuru == "Para Yatırma"
+                         ? "Deposit"
+                         : "Unknown",
+                    AccountId = paraIslemViewModel.AracTuru == "kart"
+                     ? paraIslemViewModel.SecilenKartId
+                     : paraIslemViewModel.SecilenHesapId?.ToString(),
+                    Description = "",
+                    OperationType = paraIslemViewModel.AracTuru == "hesap" ? "account" : "card",
+              
                 };
-                }
-                else
-                {
-                    paraCekYatirDto = new ParaCekYatirDto
-                    {
 
-                        Tutar = paraIslemViewModel.Tutar ?? paraIslemViewModel.YTutar ?? 0,
-                        IslemTipi = paraIslemViewModel.IslemTuru,
-                        HesapId = paraIslemViewModel.SecilenHesapId!.Value.ToString(),
-                        Aciklama = "",
-                     IslemTuru= paraIslemViewModel.AracTuru,   
-                
-
-                };
-                }
-            
-            
                 var handler = new HttpClientHandler
                 {
                     ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
@@ -90,13 +76,18 @@ namespace BankaMVC.Controllers
                     }
 
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
 
-                    var apiUrl = StaticSettings.ApiBaseUrl + "Islem/paracekyatir";
+          
+                    var xml = XmlConverter.XmlConverter.SerializeToXml(paraCekYatirDto);
+                    var content = new StringContent(xml, Encoding.UTF8, "application/xml");
 
-                    var content = new StringContent(JsonConvert.SerializeObject(paraCekYatirDto), Encoding.UTF8, "application/json");
+                    var apiUrl = StaticSettings.ApiBaseUrl + "Transaction/depositwithdraw";
 
                     var response = await client.PostAsync(apiUrl, content);
                     string responseContent = await response.Content.ReadAsStringAsync();
+
                     if (response.IsSuccessStatusCode)
                     {
                         TempData["Success"] = "Talebiniz başarıyla oluşturuldu.";
@@ -104,15 +95,15 @@ namespace BankaMVC.Controllers
                     }
                     else
                     {
-                        string errorContent = await response.Content.ReadAsStringAsync();
                         Console.WriteLine("Hata Kodu: " + response.StatusCode);
                         Console.WriteLine("Hata Açıklaması: " + response.ReasonPhrase);
-                        Console.WriteLine("Hata İçeriği: " + errorContent);
+                        Console.WriteLine("Hata İçeriği: " + responseContent);
                         TempData["Error"] = "Talep oluşturulurken bir hata oluştu.";
-                        return View("Basarisiz",paraIslemViewModel);
+                        return View("Basarisiz", paraIslemViewModel);
                     }
                 }
             }
+
             public IActionResult Basarili()
             {
                 if (TempData["IslemTuru"] == null)

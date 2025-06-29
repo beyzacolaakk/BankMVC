@@ -6,17 +6,17 @@
         // Enum tanımlamaları
         public enum IstekDurumu
         {
-            Beklemede,
-            Onaylandi,
-            Reddedildi
+            Pending,
+            Active,
+            Rejected
         }
          
         public enum DestekDurumu
         {
-            Açık,  
-            Islemde,
-            Çözüldü,
-            Kapatildi
+            Open,
+            Process,
+            Resolved,  
+            Closed
         }
 
         public enum KartTipi

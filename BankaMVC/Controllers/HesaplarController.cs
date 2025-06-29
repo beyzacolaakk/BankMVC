@@ -121,14 +121,14 @@ namespace BankaMVC.Controllers
                     new ParaBirimiOption
                     {
                         Value = "TL",
-                        Text = "Türk Lirası",
+                        Text = "Turkish Lira",
                         Symbol = "₺",
                     Description = "For all your transactions in Turkey"
                     },
                     new ParaBirimiOption
                     {
                         Value = "USD",
-                        Text = "Amerikan Doları",
+                        Text = "USD",
                         Symbol = "$",
            Description = "For international transactions"
                     },

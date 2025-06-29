@@ -1,15 +1,26 @@
-﻿namespace BankaMVC.Models.DTOs
+﻿using System.Xml.Serialization;
+
+namespace BankaMVC.Models.DTOs
 {
-    public class ParaCekYatirDto
+    [XmlRoot("DepositWithdrawDto")]
+    public class DepositWithdrawDto
     {
+        [XmlElement("userId")]
+        public int UserId { get; set; }
 
-        public decimal Tutar { get; set; }
+        [XmlElement("amount")]
+        public decimal Amount { get; set; }
 
-        public string IslemTipi { get; set; }
+        [XmlElement("transactionType")]
+        public string TransactionType { get; set; } = string.Empty;
 
-        public string Aciklama { get; set; } 
-        public string HesapId { get; set; }
+        [XmlElement("description")]
+        public string? Description { get; set; }
 
-        public string IslemTuru { get; set; }    
+        [XmlElement("accountId")]
+        public string AccountId { get; set; } = string.Empty;
+
+        [XmlElement("operationType")]
+        public string OperationType { get; set; } = string.Empty;
     }
 }

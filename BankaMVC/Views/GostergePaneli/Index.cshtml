@@ -12,7 +12,7 @@
     <!-- Yan Menü -->
     <div class="side-menu" id="side-menu">
         <div class="menu-header">
-            <h2>Menü</h2>
+            <h2>Menu</h2>
             <button class="close-menu-btn" id="close-menu">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -29,9 +29,9 @@
                 </div>
                 <div class="user-details">
                     <h3>@Model.Kullanici.AdSoyad</h3>
-                    <p>Sube: @Model.Kullanici.Sube</p>
-                    <p>Email: @Model.Kullanici.Email</p>
-                    <p>Telefon: @Model.Kullanici.Telefon</p>
+                    <p>Branch: @Model.Kullanici.Sube</p>
+                    <p>E-mail: @Model.Kullanici.Email</p>
+                    <p>phone: @Model.Kullanici.Telefon</p>
      
                 </div>
             </div>
@@ -141,7 +141,7 @@
                         <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
                     </svg>
                 </div>
-                <span>Ayarlarım</span>
+                <span>Settings</span>
             </a>
 
             <a href="/GostergePaneli/Cikis" class="footer-item logout" data-action="cikis">
@@ -152,7 +152,7 @@
                         <line x1="21" y1="12" x2="9" y2="12"></line>
                     </svg>
                 </div>
-                <span>Çıkış</span>
+                <span>Logout</span>
             </a>
         </div>
     </div>
@@ -224,7 +224,9 @@
                         }
                         else
                         {
-                            <p>Hesabınız bulunmamaktadır</p>
+                            <p>
+                                You do not have an account
+                            </p>
                         }
                     </div>
 
@@ -283,7 +285,7 @@
                         }
                         else
                         {
-                            <p>Kartınız bulunmamaktadır.</p>
+                            <p>You do not have a card.</p>
                         }
                     </div>
 

@@ -41,21 +41,21 @@
                             <td>@item.Id</td>
                             <td>@item.MusteriAdiSoyadi</td>
                             <td>@item.Konu</td>
-                            <td>@item.TalepTarihi.ToString("dd.MM.yyyy HH:mm")</td>
+                            <td>@item.TalepTarihi.ToString("dd.MM.yyyy")</td>
                             <td>
                                 @switch (item.Durum)
                                 {
-                                    case BankaMVC.Models.Somut.BankaYonetimPaneli.Models.DestekDurumu.Açık:
-                                        <span class="badge badge-primary">Açık</span>
+                                    case BankaMVC.Models.Somut.BankaYonetimPaneli.Models.DestekDurumu.Open:
+                                        <span class="badge badge-primary">Open</span>
                                         break;
-                                    case BankaMVC.Models.Somut.BankaYonetimPaneli.Models.DestekDurumu.Islemde:
-                                        <span class="badge badge-warning">İşlemde</span>
+                                    case BankaMVC.Models.Somut.BankaYonetimPaneli.Models.DestekDurumu.Process:
+                                        <span class="badge badge-warning">Process</span>
                                         break;
-                                    case BankaMVC.Models.Somut.BankaYonetimPaneli.Models.DestekDurumu.Çözüldü:
-                                        <span class="badge badge-success">Çözüldü</span>
+                                    case BankaMVC.Models.Somut.BankaYonetimPaneli.Models.DestekDurumu.Resolved:
+                                        <span class="badge badge-success">Resolved</span>
                                         break;
-                                    case BankaMVC.Models.Somut.BankaYonetimPaneli.Models.DestekDurumu.Kapatildi:
-                                        <span class="badge badge-danger">Kapatıldı</span>
+                                    case BankaMVC.Models.Somut.BankaYonetimPaneli.Models.DestekDurumu.Closed:
+                                        <span class="badge badge-danger">Closed</span>
                                         break;
                                 }
                             </td>

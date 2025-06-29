@@ -110,15 +110,17 @@
                                 }
                                 else
                                 {
-                                    <div class="alert alert-warning">Sistemde kayıtlı herhangi bir hesabınız bulunmamaktadır.</div>
+                                    <div class="alert alert-warning">
+                                        You do not have any account registered in the system..
+                                    </div>
                                 }
-                                <!-- ===== YENİ KOD SONU ===== -->
+                   
                             </div>
 
-                            <!-- Kart Seçimi -->
+                   
                             <div id="kart-secimi" class="section" style="display: none;">
-                                <label class="section-title">Kart Seçimi</label>
-                                <!-- ===== YENİ KOD BAŞLANGICI ===== -->
+                                <label class="section-title">Card Selection</label>
+                           
                                 @if (Model.Kartlar != null && Model.Kartlar.Any())
                                 {
                                     @foreach (var kart in Model.Kartlar)
@@ -133,7 +135,9 @@
                                                         <div class="account-number">@kart.KartNumarasi</div>
                                                         @if (disabled)
                                                         {
-                                                            <div class="error-text">Para çekme için kullanılamaz</div>
+                                                            <div class="error-text">
+                                                                Cannot be used for withdrawal
+                                                            </div>
                                                         }
                                                     </div>
                                                     <div class="account-right">
@@ -159,9 +163,11 @@
                                 }
                                 else
                                 {
-                                    <div class="alert alert-warning">Sistemde kayıtlı herhangi bir kartınız bulunmamaktadır.</div>
+                                    <div class="alert alert-warning">
+                                        You do not have any cards registered in the system.
+                                    </div>
                                 }
-                                <!-- ===== YENİ KOD SONU ===== -->
+                  
                             </div>
 
                             <!-- Tutar -->
@@ -184,9 +190,9 @@
                             </button>
                         </div>
 
-                        <!-- Para Yatır Tab -->
+       
                         <div id="yatir-tab" class="tab-content">
-                            <!-- Araç Türü -->
+              
                             <div class="section">
                                 <label class="section-title">Yatırım Yöntemi</label>
                                 <div class="radio-group">
@@ -218,7 +224,7 @@
                                 <label class="section-title">
                                     Account Selection
                                 </label>
-                                <!-- ===== YENİ KOD BAŞLANGICI ===== -->
+                       
                                 @if (Model.Hesaplar != null && Model.Hesaplar.Any())
                                 {
                                     @foreach (var hesap in Model.Hesaplar)
@@ -249,15 +255,17 @@
                                 }
                                 else
                                 {
-                                    <div class="alert alert-warning">Sistemde kayıtlı herhangi bir hesabınız bulunmamaktadır.</div>
+                                    <div class="alert alert-warning">
+                                        You do not have any account registered in the system.
+                                    </div>
                                 }
-                                <!-- ===== YENİ KOD SONU ===== -->
+                    
                             </div>
 
-                            <!-- Kart Seçimi -->
+       
                             <div id="kart-secimi-yatir" class="section" style="display: none;">
-                                <label class="section-title">Kart Seçimi</label>
-                                <!-- ===== YENİ KOD BAŞLANGICI ===== -->
+                                <label class="section-title">Card Selection</label>
+                      
                                 @if (Model.Kartlar != null && Model.Kartlar.Any())
                                 {
                                     @foreach (var kart in Model.Kartlar)
@@ -302,7 +310,9 @@
                                 }
                                 else
                                 {
-                                    <div class="alert alert-warning">Sistemde kayıtlı herhangi bir kartınız bulunmamaktadır.</div>
+                                    <div class="alert alert-warning">
+                                        You do not have any cards registered in the system.
+                                    </div>
                                 }
                              
                             </div>
@@ -333,7 +343,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // --- BU BÖLÜMLER AYNI KALIYOR ---
+
         const tabBtns = document.querySelectorAll('.tab-btn');
         const tabContents = document.querySelectorAll('.tab-content');
         const islemTuruInput = document.getElementById('islemTuruInput');
@@ -393,16 +403,16 @@
             document.querySelectorAll('input[name="SecilenHesapId"], input[name="SecilenKartId"]').forEach(radio => radio.checked = false);
         }
 
-        // --- DEĞİŞTİRİLECEK BÖLÜM BURASI ---
+    
         const form = document.querySelector('form');
         form.addEventListener('submit', function (e) {
             const activeTab = document.querySelector('.tab-content.active');
             if (!activeTab) {
-                e.preventDefault(); // Her ihtimale karşı
+                e.preventDefault(); 
                 return;
             }
 
-            // 1. Tutar Kontrolü
+
             let amountInput;
             if (activeTab.id === 'cek-tab') {
                 amountInput = activeTab.querySelector('input[name="Tutar"]');
@@ -412,15 +422,15 @@
 
             if (!amountInput.value || parseFloat(amountInput.value) <= 0) {
                 alert("Lütfen geçerli bir tutar giriniz.");
-                e.preventDefault(); // Formun gönderilmesini engelle
+                e.preventDefault(); 
                 amountInput.focus();
-                return; // Fonksiyonu sonlandır
+                return; 
             }
 
-            // 2. Yöntem (Araç Türü) ve Seçim Kontrolü
+          
             const selectedAracTuruRadio = activeTab.querySelector('input[name="AracTuru"]:checked');
 
-            // Eğer "Hesaptan" veya "Karttan" gibi bir yöntem seçilmemişse uyar
+       
             if (!selectedAracTuruRadio) {
                 alert("Lütfen bir işlem yöntemi seçiniz (Hesaptan veya Karttan).");
                 e.preventDefault();
@@ -429,7 +439,7 @@
 
             const aracTuruValue = selectedAracTuruRadio.value;
 
-            // Seçilen yönteme göre hesap veya kartın seçilip seçilmediğini kontrol et
+         
             if (aracTuruValue === 'hesap') {
                 const selectedAccount = activeTab.querySelector('input[name="SecilenHesapId"]:checked');
                 if (!selectedAccount) {

@@ -7,6 +7,8 @@ using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Collections.Generic;
 using BankaMVC.Filters;
+using System.Xml.Serialization;
+using System.Xml.Linq;
 
 namespace BankaMVC.Controllers
 {
@@ -17,7 +19,6 @@ namespace BankaMVC.Controllers
         { 
             _httpContextAccessor = httpContextAccessor;
         }
-        [HttpPost]
         public async Task<IActionResult> Cikis()
         {
             var handler = new HttpClientHandler
@@ -37,13 +38,13 @@ namespace BankaMVC.Controllers
 
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-                var apiUrl = StaticSettings.ApiBaseUrl + "Auth/cikis";
+                var apiUrl = StaticSettings.ApiBaseUrl + "v2/Auth/logout";
 
                 var response = await client.PostAsync(apiUrl, null);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    // MVC tarafında da çerezi güvenli şekilde temizle
+
                     Response.Cookies.Delete("UserJwtToken");
                     TempData["Success"] = "Çıkış yapıldı.";
                 }
@@ -57,7 +58,6 @@ namespace BankaMVC.Controllers
                 return RedirectToAction("Index", "Giris");
             }
         }
-
         [HttpGet]
         private async Task<IstekSayilariDto> IstekSayisiGetirAsync()
         {
@@ -76,25 +76,56 @@ namespace BankaMVC.Controllers
                 }
 
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                var apiUrl = StaticSettings.ApiBaseUrl + "Hesap/Isteksayilarigetir";
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
+
+                var apiUrl = StaticSettings.ApiBaseUrl + "Account/getrequestcounts";
 
                 var response = await client.GetAsync(apiUrl);
                 if (response.IsSuccessStatusCode)
                 {
-                    var json = await response.Content.ReadAsStringAsync();
-                    var data = JsonConvert.DeserializeObject<SuccessDataResult<IstekSayilariDto>>(json);
+                    var xml = await response.Content.ReadAsStringAsync();
 
-                    new JsonSerializerSettings
+                    try
                     {
-                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                    };
+                        var xdoc = XDocument.Parse(xml);
+                        var dataElement = xdoc.Descendants("Data").FirstOrDefault();
 
-                    return data.Data ?? new IstekSayilariDto();
+                        if (dataElement == null)
+                            return new IstekSayilariDto();
+
+                        var dto = new IstekSayilariDto
+                        {
+                            HesapIstekleri = ParseInt(dataElement.Element("AccountRequests")),
+                            KartIstekleri = ParseInt(dataElement.Element("CardRequests")),
+                            DestekIstekleri = ParseInt(dataElement.Element("SupportRequests")),
+                            LimitArtirmaIstekleri = ParseNullableInt(dataElement.Element("LimitIncreaseRequests"))
+                        };
+
+                        return dto;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("XML çözümleme hatası: " + ex.Message);
+                        return new IstekSayilariDto();
+                    }
                 }
 
                 return new IstekSayilariDto();
             }
         }
+        private int ParseInt(XElement? element)
+        {
+            return int.TryParse(element?.Value, out int result) ? result : 0;
+        }
+
+        private int? ParseNullableInt(XElement? element)
+        {
+            if (element == null || string.IsNullOrWhiteSpace(element.Value))
+                return null;
+
+            return int.TryParse(element.Value, out int result) ? result : null;
+        }
+
         [HttpGet]
         private async Task<List<GirisOlayi>> GirisOlayiGetirAsync()
         {
@@ -109,11 +140,11 @@ namespace BankaMVC.Controllers
 
                 if (string.IsNullOrEmpty(token))
                 {
-                    return new List<GirisOlayi>(); // Token yoksa boş döner
+                    return new List<GirisOlayi>(); 
                 }
 
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                var apiUrl = StaticSettings.ApiBaseUrl + "GirisOlayi/hepsinigetir";
+                var apiUrl = StaticSettings.ApiBaseUrl + "v2/LoginEvent/getall";
 
                 var response = await client.GetAsync(apiUrl);
                 if (response.IsSuccessStatusCode)
@@ -132,11 +163,40 @@ namespace BankaMVC.Controllers
                 return new List<GirisOlayi>();
             }
         }
+        [HttpGet]
+        public async Task<IActionResult> LoginOlaylariHtml()
+        {
+            var handler = new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+            };
 
-        [RoleAuthorize("Yönetici")]
+            using var client = new HttpClient(handler);
+            var token = _httpContextAccessor.HttpContext.Request.Cookies["UserJwtToken"];
+
+            if (string.IsNullOrEmpty(token))
+                return Content("<p>Yetkilendirme hatası</p>", "text/html");
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var apiUrl = StaticSettings.ApiBaseUrl + "v2/LoginEvent/getall";
+
+            var response = await client.GetAsync(apiUrl);
+            if (response.IsSuccessStatusCode)
+            {
+                var html = await response.Content.ReadAsStringAsync();
+                return Content(html, "text/html");
+            }
+
+            return Content("<p>Veri alınamadı</p>", "text/html");
+        }
+
+
+
+        [RoleAuthorize("Administrator")]
         public async Task<ActionResult> Index()
         {
             var veri = await IstekSayisiGetirAsync();
+            /*
             var girislog =await GirisOlayiGetirAsync();
             var log = girislog.Select(g => new KullaniciLogDto
             {
@@ -146,7 +206,7 @@ namespace BankaMVC.Controllers
              KullaniciId=g.KullaniciId,
              Zaman = g.Zaman
 
-            }).ToList();
+            }).ToList();*/
    
             var model = new DashboardOzet
             {
@@ -154,7 +214,7 @@ namespace BankaMVC.Controllers
                 BekleyenKartIstekleri = veri.KartIstekleri,
                 AcikDestekTalepleri = veri.DestekIstekleri,
                 BekleyenLimitArtirmaIstekleri = veri.LimitArtirmaIstekleri ?? 0,
-                KullaniciLoglari= log,
+               //KullaniciLoglari= log,//
                 
             };
 

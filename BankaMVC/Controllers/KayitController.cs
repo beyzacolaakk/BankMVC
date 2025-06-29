@@ -10,6 +10,8 @@ using static BankaMVC.Controllers.GirisController;
 using System.Security.Claims;
 using System.Text;
 using Banka.Varlıklar.DTOs;
+using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace BankaMVC.Controllers
 {
@@ -50,7 +52,7 @@ namespace BankaMVC.Controllers
             kayit.Subeler = await SubelerGetirAsync();
             return View(kayit);
         }
-        private async Task<List<SubeDto>> SubelerGetirAsync() 
+        private async Task<List<SubeDto>> SubelerGetirAsync()
         {
             var handler = new HttpClientHandler
             {
@@ -59,25 +61,45 @@ namespace BankaMVC.Controllers
 
             using (var client = new HttpClient(handler))
             {
-                var apiUrl = StaticSettings.ApiBaseUrl + "Sube/subelerigetir";
+                var apiUrl = StaticSettings.ApiBaseUrl + "Branch/getbranches";
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
 
                 var response = await client.GetAsync(apiUrl);
                 if (response.IsSuccessStatusCode)
                 {
-                    var json = await response.Content.ReadAsStringAsync();
-                    var result = JsonConvert.DeserializeObject<SuccessDataResult<List<SubeDto>>>(
-            json,
-            new JsonSerializerSettings
-            {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            });
+                    var xml = await response.Content.ReadAsStringAsync();
 
-                    return result?.Data ?? new List<SubeDto>();
+                    try
+                    {
+                        var document = XDocument.Parse(xml);
+                        var subeler = new List<SubeDto>();
+
+                        var elements = document.Descendants("BranchDto");
+
+                        foreach (var element in elements)
+                        {
+                            var dto = new SubeDto
+                            {
+                                Id = int.TryParse(element.Element("Id")?.Value, out var id) ? id : 0,
+                                SubeAdi = element.Element("BranchName")?.Value ?? string.Empty
+                            };
+
+                            subeler.Add(dto);
+                        }
+
+                        return subeler;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("XML parse hatası: " + ex.Message);
+                        return new List<SubeDto>();
+                    }
                 }
 
                 return new List<SubeDto>();
             }
         }
+
         [HttpPost]
         public async Task<IActionResult> Kayit(KayitViewModel kayitViewModel)
         {
@@ -89,32 +111,48 @@ namespace BankaMVC.Controllers
                 return View("Basarisiz", kayitViewModel);
             }
 
-
-            var dto = new KullaniciKayitDto
+            var dto = new UserRegisterDto
             {
-                AdSoyad = kayitViewModel.AdSoyad,
+                FullName = kayitViewModel.AdSoyad,
                 Email = kayitViewModel.Email,
-                Telefon ="0"+ kayitViewModel.Telefon,
-                Sifre = kayitViewModel.Sifre,
-                Sube = kayitViewModel.SecilenSubeId,
-                Aktif = true
+                Phone = "0" + kayitViewModel.Telefon,
+                Password = kayitViewModel.Sifre,
+                Branch = kayitViewModel.SecilenSubeId,
+                IsActive = true
             };
 
 
+            var xmlSerializer = new XmlSerializer(typeof(UserRegisterDto));
+            string xmlContent;
+            using (var stringWriter = new Utf8StringWriter())  
+            {
+                xmlSerializer.Serialize(stringWriter, dto);
+                xmlContent = stringWriter.ToString();
+            }
+
             using var client = new HttpClient();
-            var response = await client.PostAsJsonAsync(StaticSettings.ApiBaseUrl + "Auth/kayit", dto); // URL'yi kendi backend'ine göre ayarla
+
+            // XML içerikli request oluştur
+            var content = new StringContent(xmlContent, Encoding.UTF8, "application/xml");
+
+            var response = await client.PostAsync(StaticSettings.ApiBaseUrl + "v1/Auth/register", content);
 
             if (response.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index", "Giris");
             }
 
-            // Hata mesajı ekle
             var error = await response.Content.ReadAsStringAsync();
             ModelState.AddModelError(string.Empty, "Kayıt işlemi başarısız: " + error);
-            kayitViewModel.Subeler = await SubelerGetirAsync(); 
-            return View("Basarisiz",kayitViewModel); 
+            kayitViewModel.Subeler = await SubelerGetirAsync();
+            return View("Basarisiz", kayitViewModel);
         }
+
+        public class Utf8StringWriter : StringWriter
+        {
+            public override Encoding Encoding => Encoding.UTF8;
+        }
+
 
 
 

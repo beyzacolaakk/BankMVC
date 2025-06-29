@@ -16,7 +16,9 @@
                         <path d="M19 12H5"></path>
                     </svg>
                 </a>
-                <h1>Destek </h1>
+                <h1>
+                    Recent Transactions
+                </h1>
             </div>
         </header>
 
@@ -29,7 +31,7 @@
                             <path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1" />
                             <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4" />
                         </svg>
-                        <span>Vadesiz İşlemler</span>
+                        <span>Account Transactions</span>
                     </div>
                 </button>
                 <button type="button" class="tab-btn @(Model.AktifTab == "kredi" ? "active" : "")" data-tab="kredi">
@@ -38,7 +40,9 @@
                             <rect width="20" height="14" x="2" y="5" rx="2" />
                             <line x1="2" x2="22" y1="10" y2="10" />
                         </svg>
-                        <span>Kredi Kartı İşlemleri</span>
+                        <span>
+                            Card Transactions
+                        </span>
                     </div>
                 </button>
             </div>
@@ -47,7 +51,9 @@
         <!-- Content -->
         <div class="card">
             <div class="card-header">
-                <h2 id="section-title">Son Vadesiz Hesap İşlemleri</h2>
+                <h2 id="section-title">
+                    Latest Account Transactions
+                </h2>
             </div>
 
             <div id="islem-listesi">
@@ -73,9 +79,9 @@
 
                 // Başlığı güncelle
                 if (tabType === 'vadesiz') {
-                    sectionTitle.textContent = 'Son Vadesiz Hesap İşlemleri';
+                    sectionTitle.textContent = 'Latest Account Transactions';
                 } else {
-                    sectionTitle.textContent = 'Son Kredi Kartı İşlemleri';
+                    sectionTitle.textContent = 'Latest Card Transactions';
                 }
 
                 // İşlem listesini güncelle

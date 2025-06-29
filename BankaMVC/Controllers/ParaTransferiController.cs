@@ -179,7 +179,7 @@ namespace BankaMVC.Controllers
 
                     if (string.IsNullOrEmpty(token))
                     {
-                        return new List<Kart>(); // Token yoksa boş döner
+                        return new List<Kart>();
                     }
 
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);

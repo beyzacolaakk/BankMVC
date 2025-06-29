@@ -1,0 +1,13 @@
+﻿<div id="girisLoglari">Yükleniyor...</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $.get("/AdminPanel/LoginOlaylariHtml", function (data) {
+                $("#girisLoglari").html(data);
+            }).fail(function () {
+                $("#girisLoglari").html("<p>Giriş logları yüklenirken hata oluştu.</p>");
+            });
+        });
+    </script>
+}

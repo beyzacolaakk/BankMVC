@@ -34,7 +34,7 @@
                 </div>
             </div>
   
-            <!-- Net Varlık ve Toplam Borç -->
+        
             <div class="finansal-cards">
                 <div class="finansal-card net-varlik">
                     <h3>
@@ -87,7 +87,7 @@
                         @(Model.AktifBolum == "varliklar" ? Model.ToplamVarlik.ToString("N2") : Model.AktifBolum == "borclar" ? Model.ToplamBorc.ToString("N2") : "0") @GetCurrencySymbol(Model.SecilenParaBirimi)
                     </div>
                     <div class="merkez-label" id="merkezLabel">
-                        @(Model.AktifBolum == "varliklar" ? "Total Asset" : Model.AktifBolum == "borclar" ? "Toplam Borç" : "")
+                        @(Model.AktifBolum == "varliklar" ? "Total Asset" : Model.AktifBolum == "borclar" ? "Total Debt" : "")
                     </div>
                 </div>
             </div>
@@ -139,7 +139,9 @@
                         <div class="detay-item">
                             <div class="detay-sol">
                                 <div class="renk-kutu" style="background-color: @colors[colorIndex % colors.Length]"></div>
-                                <span class="detay-ad">Kredi Kartı (***@son4)</span>
+                                <span class="detay-ad">
+                                    Credit card (***@son4)
+                                </span>
                             </div>
                             <div class="detay-sag">
                                 <div class="detay-tutar">@kart.KartBorc @GetCurrencySymbol(Model.SecilenParaBirimi)</div>

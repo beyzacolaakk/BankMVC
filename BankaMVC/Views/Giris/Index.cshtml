@@ -13,7 +13,9 @@
                 </div>
             </div>
             <h1 class="app-title">Mersin Bank</h1>
-            <p class="app-subtitle">Hesabınıza giriş yapın</p>
+            <p class="app-subtitle">
+                Log in to your account
+            </p>
         </div>
 
         <div class="login-form-container">
@@ -45,7 +47,9 @@
                                 @maxlength = "15"
                             })
                     </div>
-                    <small class="form-help">Başında 0 olmadan 10 haneli telefon numaranızı giriniz</small>
+                    <small class="form-help">
+                        Please enter your 10-digit phone number without the 0 at the beginning.
+                    </small>
                     @Html.ValidationMessageFor(m => m.Telefon, "", new { @class = "field-validation-error" })
                 </div>
 
@@ -63,7 +67,7 @@
                         @Html.PasswordFor(m => m.Sifre, new
                             {
                                 @class = "form-input",
-                                @placeholder = "Şifrenizi giriniz",
+                                @placeholder = "Enter your password",
                                 @id = "sifre-input"
                             })
                         <button type="button" class="password-toggle" id="password-toggle">
@@ -83,21 +87,27 @@
            
 
                 <button type="submit" class="login-button">
-                    Giriş Yap
+
+                    Login
                 </button>
 
                 <div class="register-link">
                     <p>
-                        Hesabınız yok mu?
-                        <a href="@Url.Action("Index", "Kayit")">Hemen Başvurun</a>
+
+                        Don't have an account?
+                        <a href="@Url.Action("Index", "Kayit")">
+                            Apply Now
+                        </a>
                     </p>
                 </div>
             }
         </div>
 
         <div class="footer-info">
-            <p>7/24 Müşteri Hizmetleri: 0850 XXX XX XX</p>
-            <p>&copy; 2024 Bankam. Tüm hakları saklıdır.</p>
+            <p>
+                24/7 Customer Service: 0850 XXX XX XX
+            </p>
+            <p>&copy; 2024 My Bank. All rights reserved.</p>
         </div>
     </div>
 </div>

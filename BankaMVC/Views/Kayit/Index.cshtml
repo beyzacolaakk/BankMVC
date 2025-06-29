@@ -14,7 +14,9 @@
                 </div>
             </div>
             <h1 class="app-title">Mersin Bank</h1>
-            <p class="app-subtitle">Yeni Hesap Oluşturun</p>
+            <p class="app-subtitle">
+                Create New Account
+            </p>
         </div>
 
         <div class="login-form-container">
@@ -30,7 +32,7 @@
                 }
 
                 <div class="form-group">
-                    @Html.LabelFor(m => m.AdSoyad, new { @class = "form-label" })
+                    <label for="AdSoyad" class="form-label">Name Surname</label> 
                     <div class="input-group">
                         <span class="input-icon">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -38,13 +40,16 @@
                                 <path d="M5.5 21a7.5 7.5 0 0 1 13 0" />
                             </svg>
                         </span>
-                        @Html.TextBoxFor(m => m.AdSoyad, new { @class = "form-input", @placeholder = "Ad Soyad", autocomplete = "new-name" })
+                        @Html.TextBoxFor(m => m.AdSoyad, new
+                            {
+                                @class = "form-input",
+                                @placeholder = " Name Surname", autocomplete = "new- name" })
                     </div>
                     @Html.ValidationMessageFor(m => m.AdSoyad, "", new { @class = "field-validation-error" })
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Email, new { @class = "form-label" })
+                    <label for="Email" class="form-label">Email</label>
                     <div class="input-group">
                         <span class="input-icon">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -52,13 +57,16 @@
                                 <polyline points="4,4 12,13 20,4" />
                             </svg>
                         </span>
-                        @Html.TextBoxFor(m => m.Email, new { @class = "form-input", @placeholder = "E-posta adresi", autocomplete = "new-email" })
+                        @Html.TextBoxFor(m => m.Email, new
+                            {
+                                @class = "form-input",
+                                @placeholder = " Email address", autocomplete = "new- email" })
                     </div>
                     @Html.ValidationMessageFor(m => m.Email, "", new { @class = "field-validation-error" })
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Telefon, new { @class = "form-label" })
+                    <label for="Telefon" class="form-label">Phone</label>
                     <div class="input-group">
                         <span class="input-icon">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -78,12 +86,14 @@
                         </span>
                         @Html.TextBoxFor(m => m.Telefon, new { @class = "form-input", @placeholder = "5XX XXX XX XX", @maxlength = "15", autocomplete = "new-telefon" })
                     </div>
-                    <small class="form-help">Başında 0 olmadan 10 haneli telefon numaranızı giriniz</small>
+                    <small class="form-help">
+                        Please enter your 10-digit phone number without the 0 at the beginning.
+                    </small>
                     @Html.ValidationMessageFor(m => m.Telefon, "", new { @class = "field-validation-error" })
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Sifre, new { @class = "form-label" })
+                    <label for="Sifre" class="form-label">Password</label>
                     <div class="input-group">
                         <span class="input-icon">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -93,7 +103,7 @@
                                 <path d="M8 11V7a4 4 0 0 1 8 0v4"></path>
                             </svg>
                         </span>
-                        @Html.PasswordFor(m => m.Sifre, new { @class = "form-input", @placeholder = "Şifrenizi belirleyin", autocomplete = "new-password" })
+                        @Html.PasswordFor(m => m.Sifre, new { @class = "form-input", @placeholder = "Set your password", autocomplete = "new-password" })
                     </div>
                     @Html.ValidationMessageFor(m => m.Sifre, "", new { @class = "field-validation-error" })
                 </div>
@@ -106,27 +116,35 @@
                                 <path d="M4 6h16M4 12h16M4 18h16" />
                             </svg>
                         </span>
-                        @Html.DropDownListFor(m => m.SecilenSubeId, new SelectList(Model.Subeler, "Id", "SubeAdi"), "-- Şube Seçiniz --", new { @class = "form-input" })
+                        @Html.DropDownListFor(m => m.SecilenSubeId, new SelectList(Model.Subeler, "Id", "SubeAdi"), "-- Select Branch --", new { @class = "form-input" })
                     </div>
                     @Html.ValidationMessageFor(m => m.SecilenSubeId, "", new { @class = "field-validation-error" })
                 </div>
 
                 <button type="submit" class="login-button">
-                    Kayıt Ol
+
+                    Sign Up
                 </button>
 
                 <div class="register-link">
                     <p>
-                        Zaten hesabınız var mı?
-                        <a href="@Url.Action("Index", "Giris")">Giriş Yap</a>
+
+                        Already have an account?
+                        <a href="@Url.Action("Index", "Giris")">
+                            Login
+                        </a>
                     </p>
                 </div>
             }
         </div>
 
         <div class="footer-info">
-            <p>7/24 Müşteri Hizmetleri: 0850 XXX XX XX</p>
-            <p>&copy; 2024 Bankam. Tüm hakları saklıdır.</p>
+            <p>
+                24/7 Customer Service: 0850 XXX XX XX
+            </p>
+            <p>
+                &copy; 2024 My Bank. All rights reserved.
+            </p>
         </div>
     </div>
 </div>

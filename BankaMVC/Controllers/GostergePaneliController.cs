@@ -46,7 +46,7 @@ namespace BankaMVC.Controllers
 
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-                var apiUrl = StaticSettings.ApiBaseUrl + "Auth/cikis";
+                var apiUrl = StaticSettings.ApiBaseUrl + "v2/Auth/logout";
 
                 var response = await client.PostAsync(apiUrl, null);
 

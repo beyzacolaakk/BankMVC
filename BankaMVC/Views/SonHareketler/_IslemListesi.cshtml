@@ -2,7 +2,7 @@
 @if (Model == null || !Model.Any())
 {
     <div class="bos-islem-mesaj">
-        <p >Herhangi bir işlem bulunmamaktadır.</p> 
+        <p>There is no action.</p>
     </div>
 }
 else{
@@ -13,17 +13,17 @@ else{
 
     switch (islem.IslemTipi.ToLower())
     {
-        case "para çekme":
+            case "withdraw":
             sign = "-";
             tutarClass = "negative";
             break;
-        case "para yatırma":
+            case "deposit":
             sign = "+";
             tutarClass = "positive";
             break;
         case "eft":
         case "havale":
-        case "para transferi":
+            case "money transfer":
             sign = "-"; 
             tutarClass = "negative";
             break;
@@ -49,15 +49,15 @@ else{
 
         switch (islem.IslemTipi.ToLower())
         {
-            case "para çekme":
+            case "withdraw":
                 iconClass = "atm-icon";
                 iconPartialName = "_AtmIcon"; 
                 break;
-            case "para yatırma":
+            case "deposit":
                 iconClass = "deposit-icon";
                 iconPartialName = "_DepositIcon";
                 break;
-            case "para transferi":
+            case "money transfer":
                 iconClass = "transfer-icon";
                 iconPartialName = "_TransferIcon";
                 break;
@@ -97,7 +97,9 @@ else{
                             <span class="status-badge @durumClass">@islem.Durum</span>
                         </div>
 
-                        <p class="islem-bakiye">Bakiye: @islem.GuncelBakiye.ToString("N2") ₺</p>
+                        <p class="islem-bakiye">
+                            Balance: @islem.GuncelBakiye.ToString("N2") ₺
+                        </p>
                     </div>
                 </div>
             </div>

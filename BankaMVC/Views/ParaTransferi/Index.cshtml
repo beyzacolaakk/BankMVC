@@ -79,7 +79,7 @@
                     @Html.ValidationMessageFor(m => m.OdemeAraci, "", new { @class = "field-validation-error" })
                 </div>
 
-                <!-- Hesap/Kart Seçimi -->
+        
                 <div class="form-card">
                     <div class="card-header">
                         <h3 id="secim-baslik">
@@ -91,7 +91,9 @@
                     <div id="hesap-listesi" class="account-list">
                         @if (Model.Hesaplar.Count == 0)
                         {
-                            <div class="alert alert-warning">Kullanılabilir hesap bulunmamaktadır.</div>
+                            <div class="alert alert-warning">
+                                There are no accounts available.
+                            </div>
                         }
                         else
                         {

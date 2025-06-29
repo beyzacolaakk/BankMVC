@@ -92,7 +92,7 @@ namespace BankaMVC.Controllers
                     KartNumarasi = (string?)card.Element("cardNumber") ?? "",
                     KartTipi = (string?)card.Element("cardType") ?? "",
                     CVV = (string?)card.Element("cvv") ?? "",
-                    Limit = (decimal?)card.Element("limit") ?? 0,
+                    Limit = decimal.TryParse(card.Element("limit")?.Value, out var limitValue) ? limitValue : (decimal?)null,
                     SonKullanma = DateTime.TryParse((string?)card.Element("expirationDate"), out var date) ? date : DateTime.MinValue,
                     Durum = (string?)card.Element("status") ?? "",
                     Aktif = (bool?)card.Element("isActive") ?? false

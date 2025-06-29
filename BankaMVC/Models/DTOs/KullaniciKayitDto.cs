@@ -5,19 +5,29 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Banka.Varlıklar.DTOs
 {
-    public class KullaniciKayitDto
+
+    public class UserRegisterDto
     {
+        [XmlElement("fullName")]
+        public string FullName { get; set; } = string.Empty;
 
-        public string AdSoyad { get; set; }
+        [XmlElement("email")]
+        public string Email { get; set; } = string.Empty;
 
-        public string Email { get; set; }
+        [XmlElement("phone")]
+        public string Phone { get; set; } = string.Empty;
 
-        public string Telefon { get; set; }
-        public string Sifre { get; set; }
-        public int Sube { get; set; }  
-        public bool Aktif { get; set; }
+        [XmlElement("password")]
+        public string Password { get; set; } = string.Empty;
+
+        [XmlElement("branch")]
+        public int Branch { get; set; }
+
+        [XmlElement("isActive")]
+        public bool IsActive { get; set; } = true;
     }
 }

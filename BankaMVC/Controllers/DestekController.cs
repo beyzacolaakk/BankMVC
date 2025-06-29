@@ -1,5 +1,6 @@
 ﻿using Banka.Varlıklar.DTOs;
 using BankaMVC.Filters;
+using BankaMVC.Models.DTOs;
 using BankaMVC.Models.Result;
 using BankaMVC.Models.Somut;
 using BankaMVC.Models.ViewModels;
@@ -8,6 +9,7 @@ using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
+using System.Xml.Linq;
 
 namespace BankaMVC.Controllers
 {
@@ -20,7 +22,7 @@ namespace BankaMVC.Controllers
         }
 
         [RoleAuthorize("Customer")]
-        public async Task<IActionResult> Index(string durum = "tum", string arama = "")
+        public async Task<IActionResult> Index(string durum = "all", string arama = "")
         {
             var token = _httpContextAccessor.HttpContext.Request.Cookies["UserJwtToken"];
 
@@ -38,8 +40,10 @@ namespace BankaMVC.Controllers
             using (var client = new HttpClient(handler))
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
 
-                var apiUrl = $"{StaticSettings.ApiBaseUrl}DestekTalebi/filtre?durum={durum}&arama={arama}";
+                var apiUrl = $"{StaticSettings.ApiBaseUrl}SupportRequest/filter?status={durum}&search={arama}";
 
                 var response = await client.GetAsync(apiUrl);
 
@@ -49,7 +53,22 @@ namespace BankaMVC.Controllers
                     return View(new DestekViewModel());
                 }
 
-                var talepler = await response.Content.ReadFromJsonAsync<List<DestekTalebi>>();
+                var xml = await response.Content.ReadAsStringAsync();
+                var xdoc = XDocument.Parse(xml);
+
+                var talepler = xdoc.Descendants("SupportRequest")
+        .Select(x => new DestekTalebi
+        {
+            Id = (int?)x.Element("id") ?? 0,
+            KullaniciId = (int?)x.Element("userId") ?? 0,
+            Konu = x.Element("subject")?.Value ?? "",
+            Mesaj = x.Element("message")?.Value ?? "",
+            Durum = x.Element("status")?.Value ?? "",
+            Kategori = x.Element("category")?.Value ?? "",
+            Yanit = x.Element("response")?.Value,
+            OlusturmaTarihi = DateTime.TryParse(x.Element("createdDate")?.Value, out var tarih) ? tarih : DateTime.MinValue
+        }).ToList();
+
 
                 var viewModel = new DestekViewModel
                 {
@@ -66,10 +85,15 @@ namespace BankaMVC.Controllers
 
 
 
+
+
         public IActionResult YeniTalep()
         {
             return View(new DestekTalebi());
         }
+
+
+
 
         [HttpPost]
         public async Task<IActionResult> YeniTalep(DestekTalebiOlusturDto model, string Kategori)
@@ -78,11 +102,7 @@ namespace BankaMVC.Controllers
             {
                 return View(model);
             }
-
-
-  
-
-            // API'ye gönder
+          
             var handler = new HttpClientHandler
             {
                 ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
@@ -91,7 +111,17 @@ namespace BankaMVC.Controllers
             using (var client = new HttpClient(handler))
             {
                 var token = _httpContextAccessor.HttpContext.Request.Cookies["UserJwtToken"];
-
+                var res= new SupportRequestDto{ 
+                Category = Kategori,
+                Subject = model.Konu,   
+                FullName=model.AdSoyad,
+                Message = model.Mesaj,
+                Response=model.Yanit,
+                Status=model.Durum,
+                Date=model.Tarih,
+                UserId=model.KullaniciId
+                
+                };
                 if (string.IsNullOrEmpty(token))
                 {
                     TempData["Error"] = "Giriş yapmanız gerekiyor.";
@@ -99,10 +129,14 @@ namespace BankaMVC.Controllers
                 }
 
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
 
-                var apiUrl = StaticSettings.ApiBaseUrl + "DestekTalebi/destektalebiolustur";
+          
+                var xml = XmlConverter.XmlConverter.SerializeToXml(res); 
+                var content = new StringContent(xml, Encoding.UTF8, "application/xml");
 
-                var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+                var apiUrl = StaticSettings.ApiBaseUrl + "SupportRequest/createsupportrequest";
 
                 var response = await client.PostAsync(apiUrl, content);
 
@@ -119,41 +153,5 @@ namespace BankaMVC.Controllers
             }
         }
 
-        private async Task<List<DestekTalebi>> DestekGetirAsync() 
-        {
-            var handler = new HttpClientHandler
-            {
-                ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-            };
-
-            using (var client = new HttpClient(handler))
-            {
-                var token = _httpContextAccessor.HttpContext.Request.Cookies["UserJwtToken"];
-
-                if (string.IsNullOrEmpty(token))
-                {
-                    return new List<DestekTalebi>(); // Token yoksa boş döner
-                }
-
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                var apiUrl = StaticSettings.ApiBaseUrl + "DestekTalebi/idilehepsinigetir";
-
-                var response = await client.GetAsync(apiUrl);
-                if (response.IsSuccessStatusCode)
-                {
-                    var json = await response.Content.ReadAsStringAsync();
-                    var result = JsonConvert.DeserializeObject<SuccessDataResult<List<DestekTalebi>>>(
-            json,
-            new JsonSerializerSettings
-            {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            });
-
-                    return result?.Data ?? new List<DestekTalebi>();
-                }
-
-                return new List<DestekTalebi>();
-            }
-        }
     }
 }

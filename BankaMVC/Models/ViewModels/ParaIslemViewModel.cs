@@ -7,10 +7,10 @@ namespace BankaMVC.Models.ViewModels
     public class ParaIslemViewModel
     {
         [Required(ErrorMessage = "İşlem türü seçilmelidir")]
-        public string IslemTuru { get; set; } // "cek" veya "yatir"
+        public string IslemTuru { get; set; } 
 
         [Required(ErrorMessage = "Araç türü seçilmelidir")]
-        public string AracTuru { get; set; } // "hesap" veya "kart"
+        public string AracTuru { get; set; } 
 
         public int? SecilenHesapId { get; set; }
 

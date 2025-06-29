@@ -56,7 +56,7 @@
                     const secilenKart = document.querySelector('input[name="SecilenKartId"]:checked');
                     if (!secilenKart) {
                         e.preventDefault();
-                        alert('Lütfen bir kredi kartı seçiniz');
+                        alert('Please select a credit card');
                         return false;
                     }
                 }

@@ -1,15 +1,19 @@
 ﻿@model IEnumerable<BankaMVC.Models.Somut.BankaYonetimPaneli.Models.HesapAcmaIstegi>
 
 @{
-    ViewBag.Title = "Hesap Açma İstekleri";
+    ViewBag.Title = "Account Opening Requests";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2 class="page-title">Hesap Açma İstekleri</h2>
+<h2 class="page-title">
+    Account Opening Requests
+</h2>
 
 <div class="card">
     <div class="card-header">
-        <div>Tüm İstekler</div>
+        <div>
+            All Requests
+        </div>
         <div>
             <a href="#" class="btn btn-sm btn-outline-primary">
                 <i class="fas fa-filter"></i> Filtrele
@@ -25,11 +29,19 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Müşteri Adı</th>
-                        <th>Hesap No</th>
-                        <th>Başvuru Tarihi</th>
-                        <th>Durum</th>
-                        <th>İşlemler</th>
+                        <th>
+                            Customer Name
+                        </th>
+                        <th>
+                            Account Number
+                        </th>
+                        <th>
+                            Application Date
+                        </th>
+                        <th>Situation</th>
+                        <th>
+                            Transactions
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,14 +55,14 @@
                             <td>
                                 @switch (item.Durum)
                                 {
-                                    case BankaMVC.Models.Somut.BankaYonetimPaneli.Models.IstekDurumu.Beklemede:
-                                        <span class="badge badge-primary">Beklemede</span>
+                                    case BankaMVC.Models.Somut.BankaYonetimPaneli.Models.IstekDurumu.Pending:
+                                        <span class="badge badge-primary">Pending</span>
                                         break;
-                                    case BankaMVC.Models.Somut.BankaYonetimPaneli.Models.IstekDurumu.Onaylandi:
-                                        <span class="badge badge-success">Onaylandı</span>
+                                    case BankaMVC.Models.Somut.BankaYonetimPaneli.Models.IstekDurumu.Active:
+                                        <span class="badge badge-success">Active</span>
                                         break;
-                                    case BankaMVC.Models.Somut.BankaYonetimPaneli.Models.IstekDurumu.Reddedildi:
-                                        <span class="badge badge-danger">Reddedildi</span>
+                                    case BankaMVC.Models.Somut.BankaYonetimPaneli.Models.IstekDurumu.Rejected:
+                                        <span class="badge badge-danger">Rejected</span>
                                         break;
                                 }
                             </td>

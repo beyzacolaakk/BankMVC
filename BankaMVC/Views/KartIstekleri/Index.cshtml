@@ -10,7 +10,9 @@
 
 <div class="card">
     <div class="card-header">
-        <div>Tüm İstekler</div>
+        <div>
+            All Requests
+        </div>
         <div>
             <a href="#" class="btn btn-sm btn-outline-primary">
                 <i class="fas fa-filter"></i> Filtrele
@@ -55,14 +57,14 @@
                             <td>
                                 @switch (item.Durum)
                                 {
-                                    case BankaMVC.Models.Somut.BankaYonetimPaneli.Models.IstekDurumu.Beklemede:
-                                        <span class="badge badge-primary">Beklemede</span>
+                                    case BankaMVC.Models.Somut.BankaYonetimPaneli.Models.IstekDurumu.Pending:
+                                        <span class="badge badge-primary">Pending</span>
                                         break;
-                                    case BankaMVC.Models.Somut.BankaYonetimPaneli.Models.IstekDurumu.Onaylandi:
-                                        <span class="badge badge-success">Onaylandı</span>
+                                    case BankaMVC.Models.Somut.BankaYonetimPaneli.Models.IstekDurumu.Active:
+                                        <span class="badge badge-success">Active</span>
                                         break;
-                                    case BankaMVC.Models.Somut.BankaYonetimPaneli.Models.IstekDurumu.Reddedildi:
-                                        <span class="badge badge-danger">Reddedildi</span>
+                                    case BankaMVC.Models.Somut.BankaYonetimPaneli.Models.IstekDurumu.Rejected:
+                                        <span class="badge badge-danger">Rejected</span>
                                         break;
                                 }
                             </td>

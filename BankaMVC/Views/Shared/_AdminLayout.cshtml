@@ -3,7 +3,10 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Banka Yönetim Paneli</title>
+    <title>
+        @ViewBag.Title -
+        Bank Management Panel
+    </title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
     <style>
@@ -684,7 +687,8 @@
                     <i class="fas fa-bars"></i>
                 </button>
                 <a href="@Url.Action("Index", "adminpanel")" class="logo">
-                    <i class="fas fa-university"></i> Banka Yönetim Paneli
+                    <i class="fas fa-university"></i>
+                    Bank Management Panel
                 </a>
             </div>
             <div class="user-info d-flex align-items-center gap-2">
@@ -694,7 +698,8 @@
                 <!-- Logout Button -->
                 <form method="post" action="@Url.Action("Cikis", "AdminPanel")" class="d-inline">
                     <button type="submit" class="btn btn-outline-light btn-sm ml-2">
-                        <i class="fas fa-sign-out-alt"></i> Çıkış
+                        <i class="fas fa-sign-out-alt"></i>
+                        Exit
                     </button>
                 </form>
             </div>
@@ -713,25 +718,27 @@
             <li class="nav-item">
                 <a href="@Url.Action("Index", "HesapIstekleri")" class="nav-link @(ViewContext.RouteData.Values["Controller"].ToString() == "HesapIstekleri" ? "active" : "")">
                     <i class="fas fa-user-plus"></i>
-                    <span>Hesap İstekleri</span>
+                    <span>Account Requests</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="@Url.Action("Index", "KartIstekleri")" class="nav-link @(ViewContext.RouteData.Values["Controller"].ToString() == "KartIstekleri" ? "active" : "")">
                     <i class="fas fa-credit-card"></i>
-                    <span>Kart İstekleri</span>
+                    <span>
+                        Card Requests
+                    </span>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="@Url.Action("Index", "DestekTalepleri")" class="nav-link @(ViewContext.RouteData.Values["Controller"].ToString() == "DestekTalepleri" ? "active" : "")">
                     <i class="fas fa-headset"></i>
-                    <span>Destek Talepleri</span>
+                    <span>Support Requests</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="@Url.Action("Index", "LimitArtirma")" class="nav-link @(ViewContext.RouteData.Values["Controller"].ToString() == "LimitArtirma" ? "active" : "")">
                     <i class="fas fa-arrow-up"></i>
-                    <span>Limit Artırma</span>
+                    <span>Limit Increase</span>
                 </a>
             </li>
         </ul>

@@ -9,6 +9,7 @@ namespace BankaMVC.XmlConverter
         public static string SerializeToXml<T>(T data)
         {
             var xmlSerializer = new XmlSerializer(typeof(T));
+
             var settings = new XmlWriterSettings
             {
                 Encoding = new UTF8Encoding(false),
@@ -16,10 +17,14 @@ namespace BankaMVC.XmlConverter
                 OmitXmlDeclaration = false
             };
 
-            using var stringWriter = new Utf8StringWriter();
+   
+            var namespaces = new XmlSerializerNamespaces();
+            namespaces.Add("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+
+            using var stringWriter = new Utf8StringWriter(); // UTF-8 destekli StringWriter
             using var xmlWriter = XmlWriter.Create(stringWriter, settings);
 
-            xmlSerializer.Serialize(xmlWriter, data);
+            xmlSerializer.Serialize(xmlWriter, data, namespaces);
             return stringWriter.ToString();
         }
 
