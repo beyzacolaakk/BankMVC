@@ -2,25 +2,20 @@
 @model IEnumerable<BankaMVC.Models.Somut.BankaYonetimPaneli.Models.LimitArtirmaIstegi>
 
 @{
-    ViewBag.Title = "Limit Artırma İstekleri";
+    ViewBag.Title = "Limit Increase Requests";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2 class="page-title">Limit Artırma İstekleri</h2>
+<h2 class="page-title">
+    Limit Increase Requests
+</h2>
 
 <div class="card">
     <div class="card-header">
         <div>
             All Requests
         </div>
-        <div>
-            <a href="#" class="btn btn-sm btn-outline-primary">
-                <i class="fas fa-filter"></i> Filtrele
-            </a>
-            <a href="#" class="btn btn-sm btn-outline-primary ml-2">
-                <i class="fas fa-download"></i> Dışa Aktar
-            </a>
-        </div>
+ 
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -72,13 +67,14 @@
                             </td>
                             <td>
                                 <a href="@Url.Action("Detay", new { id = item.Id })" class="btn btn-sm btn-info">
-                                    <i class="fas fa-eye"></i> Detay
+                                    <i class="fas fa-eye"></i> Detail
                                 </a>
                             </td>
                             <td>
                                 <form asp-action="Sil" asp-route-id="@item.Id" method="post" style="display:inline;">
                                     <button type="submit" class="btn btn-sm btn-danger">
-                                        <i class="fas fa-trash-alt"></i> Sil
+                                        <i class="fas fa-trash-alt"></i>
+                                        Delete
                                     </button>
                                 </form>
                             </td>

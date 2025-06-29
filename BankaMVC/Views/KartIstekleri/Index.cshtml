@@ -2,25 +2,20 @@
 @model IEnumerable<BankaMVC.Models.Somut.BankaYonetimPaneli.Models.KartAcmaIstegi>
 
 @{
-    ViewBag.Title = "Kart Açma İstekleri";
+    ViewBag.Title = "Card Opening Requests";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2 class="page-title">Kart Açma İstekleri</h2>
+<h2 class="page-title">
+    Card Opening Requests
+</h2>
 
 <div class="card">
     <div class="card-header">
         <div>
             All Requests
         </div>
-        <div>
-            <a href="#" class="btn btn-sm btn-outline-primary">
-                <i class="fas fa-filter"></i> Filtrele
-            </a>
-            <a href="#" class="btn btn-sm btn-outline-primary ml-2">
-                <i class="fas fa-download"></i> Dışa Aktar
-            </a>
-        </div>
+   
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -28,12 +23,24 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Müşteri</th>
-                        <th>Kart Tipi</th>
-                        <th>Talep Edilen Limit</th>
-                        <th>Başvuru Tarihi</th>
-                        <th>Durum</th>
-                        <th>İşlemler</th>
+                        <th>
+                            Customer
+                        </th>
+                        <th>
+                            Card Type
+                        </th>
+                        <th>
+                            Requested Limit
+                        </th>
+                        <th>
+                            Application Date
+                        </th>
+                        <th>
+                            Situation
+                        </th>
+                        <th>
+                            Transactions
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -70,7 +77,7 @@
                             </td>
                             <td>
                                 <a href="@Url.Action("Detay", new { id = item.Id })" class="btn btn-sm btn-info">
-                                    <i class="fas fa-eye"></i> Detay
+                                    <i class="fas fa-eye"></i> Detail
                                 </a>
                             </td>
                         </tr>

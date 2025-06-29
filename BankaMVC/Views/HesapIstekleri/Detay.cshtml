@@ -2,15 +2,17 @@
 @model BankaMVC.Models.Somut.BankaYonetimPaneli.Models.HesapAcmaIstegi
 
 @{
-    ViewBag.Title = "Hesap Açma İsteği Detayı";
+    ViewBag.Title = "Account Opening Request Details";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2 class="page-title">Hesap Açma İsteği Detayı</h2>
+<h2 class="page-title">Account Opening Request Details</h2>
 
 <div class="card">
     <div class="card-header">
-        <div>İstek Detayı</div>
+        <div>
+            Request Details
+        </div>
         <div>
             <span class="badge @(Model.Durum == BankaMVC.Models.Somut.BankaYonetimPaneli.Models.IstekDurumu.Rejected ? "badge-primary" :
                                 Model.Durum == BankaMVC.Models.Somut.BankaYonetimPaneli.Models.IstekDurumu.Active ? "badge-success" : "badge-danger")">
@@ -53,12 +55,12 @@
             <div class="d-flex">
                 <form method="post" action="@Url.Action("Onayla", new { id = Model.Id })">
                     <button type="submit" class="btn btn-success">
-                        <i class="fas fa-check"></i> Onayla
+                        <i class="fas fa-check"></i> Confirm
                     </button>
                 </form>
                 <form method="post" action="@Url.Action("Reddet", new { id = Model.Id })" class="ml-2">
                     <button type="submit" class="btn btn-danger">
-                        <i class="fas fa-times"></i> Reddet
+                        <i class="fas fa-times"></i> Reject
                     </button>
                 </form>
             </div>
@@ -68,6 +70,6 @@
 
 <div class="mt-3">
     <a href="@Url.Action("Index")" class="btn btn-primary">
-        <i class="fas fa-arrow-left"></i> Listeye Dön
+        <i class="fas fa-arrow-left"></i> Return to List
     </a>
 </div>

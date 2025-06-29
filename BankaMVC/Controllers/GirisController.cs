@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication;
 using System.Xml.Serialization;
 using BankaMVC.Models.DTOs;
 using System.Xml;
+using System.Xml.Linq;
 namespace BankaMVC.Controllers
 {
     public class GirisController : Controller
@@ -174,19 +175,25 @@ namespace BankaMVC.Controllers
                 else
                 {
                     var errorContent = await response.Content.ReadAsStringAsync();
+                    var errorMessages = new List<string>();
 
                     try
                     {
-                        var errorObj = XmlConverter.XmlConverter.DeserializeFromXml<ApiErrorResponse>(errorContent);
-                        if (errorObj?.Errors != null && errorObj.Errors.ContainsKey("Telefon"))
-                        {
-                            return (false, null, string.Join(", ", errorObj.Errors["Telefon"]));
-                        }
+                        var xdoc = XDocument.Parse(errorContent);
+                        errorMessages = xdoc.Descendants("string")
+                                            .Select(x => x.Value)
+                                            .ToList();
                     }
                     catch
                     {
-                        // XML değilse ya da deserialize edilemezse düz string döner
+                        // XML formatında değilse, hata oluşursa burası çalışır
                     }
+
+                    if (errorMessages.Any())
+                    {
+                        return (false, null, string.Join(", ", errorMessages));
+                    }
+
 
                     return (false, null, errorContent);
                 }

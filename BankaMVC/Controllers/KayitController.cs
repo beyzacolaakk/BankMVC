@@ -37,11 +37,11 @@ namespace BankaMVC.Controllers
                 {
                     var userRole = roleClaim.Value;
 
-                    if (userRole.Equals("Yönetici", StringComparison.OrdinalIgnoreCase))
+                    if (userRole.Equals("Administrator", StringComparison.OrdinalIgnoreCase))
                     {
                         return RedirectToAction("Index", "AdminPanel");
                     }
-                    else if (userRole.Equals("Müşteri", StringComparison.OrdinalIgnoreCase))
+                    else if (userRole.Equals("Customer", StringComparison.OrdinalIgnoreCase))
                     {
                         return RedirectToAction("Index", "GostergePaneli");
                     }

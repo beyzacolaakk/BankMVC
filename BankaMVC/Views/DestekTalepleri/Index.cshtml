@@ -2,23 +2,20 @@
 @model IEnumerable<BankaMVC.Models.Somut.BankaYonetimPaneli.Models.DestekTaleb>
 
 @{
-    ViewBag.Title = "Destek Talepleri";
+    ViewBag.Title = "Support Requests";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2 class="page-title">Destek Talepleri</h2>
+<h2 class="page-title">
+    Support Requests
+</h2>
 
 <div class="card">
     <div class="card-header">
-        <div>Tüm Talepler</div>
         <div>
-            <a href="#" class="btn btn-sm btn-outline-primary">
-                <i class="fas fa-filter"></i> Filtrele
-            </a>
-            <a href="#" class="btn btn-sm btn-outline-primary ml-2">
-                <i class="fas fa-download"></i> Dışa Aktar
-            </a>
+            All Requests
         </div>
+ 
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -26,11 +23,19 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Müşteri</th>
-                        <th>Konu</th>
-                        <th>Talep Tarihi</th>
-                        <th>Durum</th>
-                        <th>İşlemler</th>
+                        <th>
+                            Customer
+                        </th>
+                        <th>
+                            Subject
+                        </th>
+                        <th>
+                            Request Date
+                        </th>
+                        <th>Situation</th>
+                        <th>
+                            Transactions
+                        </th>
                         <th></th>
                     </tr>
                 </thead>
@@ -61,13 +66,14 @@
                             </td>
                             <td>
                                 <a href="@Url.Action("Detay", new { id = item.Id })" class="btn btn-sm btn-info">
-                                    <i class="fas fa-eye"></i> Detay
+                                    <i class="fas fa-eye"></i>
+                                    Detail
                                 </a>
                             </td>
                             <td>
                                 <form asp-action="Silme" asp-route-id="@item.Id" method="post" style="display:inline;">
                                     <button type="submit" class="btn btn-sm btn-danger">
-                                        <i class="fas fa-trash-alt"></i> Sil
+                                        <i class="fas fa-trash-alt"></i> Delete
                                     </button>
                                 </form>
                             </td>
