@@ -19,7 +19,13 @@ namespace BankaMVC.Filters
         public void OnAuthorization(AuthorizationFilterContext context)
         {
             var user = context.HttpContext.User;
-
+            if (!user.Identity.IsAuthenticated)
+            {
+                if( context.HttpContext.Request.Cookies.ContainsKey("UserJwtToken"))
+                {
+                    context.HttpContext.Response.Cookies.Delete("UserJwtToken");
+                }
+            }
             if (!user.Identity?.IsAuthenticated ?? true)
             {
                 context.Result = new RedirectToRouteResult(
